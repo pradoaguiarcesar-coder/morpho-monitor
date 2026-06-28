@@ -1,0 +1,46 @@
+# Este arquivo deve ficar em:  .github/workflows/monitor.yml
+name: Monitor Vault Morpho
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"      # roda a cada 5 min (horario UTC; pode atrasar sob carga)
+  workflow_dispatch: {}         # permite rodar na mao pelo botao "Run workflow"
+
+# Necessario para o robo regravar o state.json no repositorio
+permissions:
+  contents: write
+
+# Evita duas execucoes ao mesmo tempo (uma espera a outra)
+concurrency:
+  group: monitor-vault
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rodar a checagem
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python monitor.py --once
+
+      - name: Salvar o estado (se mudou)
+        run: |
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "morpho-monitor-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "update state [skip ci]"
+            git push
+          else
+            echo "Sem mudancas no estado; nada a salvar."
+          fi
