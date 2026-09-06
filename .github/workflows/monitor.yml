@@ -3,7 +3,10 @@ name: Monitor Vault Morpho
 
 on:
   schedule:
-    - cron: "*/5 * * * *"      # roda a cada 5 min (horario UTC; pode atrasar sob carga)
+    # A cada 30 min (UTC). Rodar a cada 5 min estava causando "429 Too Many
+    # Requests" no X e ~1.400 commits de estado sem necessidade. O processo de
+    # recuperacao da Main Street e de meses; 30 min e mais que suficiente.
+    - cron: "*/30 * * * *"
   workflow_dispatch: {}         # permite rodar na mao pelo botao "Run workflow"
 
 # Necessario para o robo regravar o state.json no repositorio
@@ -18,12 +21,13 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Baixar o repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Preparar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -31,6 +35,10 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
+          # Opcionais (deixe em branco para usar o padrao do script):
+          MIN_LIQUIDITY_USD: ${{ vars.MIN_LIQUIDITY_USD }}
+          PRICE_MOVE_PCT: ${{ vars.PRICE_MOVE_PCT }}
+          NITTER_INSTANCES: ${{ vars.NITTER_INSTANCES }}
         run: python monitor.py --once
 
       - name: Salvar o estado (se mudou)
@@ -40,6 +48,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add state.json
             git commit -m "update state [skip ci]"
+            git pull --rebase origin main || true
             git push
           else
             echo "Sem mudancas no estado; nada a salvar."
