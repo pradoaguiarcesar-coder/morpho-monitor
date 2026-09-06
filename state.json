@@ -1,9 +1,21 @@
 {
   "cloud_started": true,
-  "last_heartbeat_ts": 1788699355.9038713,
-  "vault": {
-    "alerted": false,
-    "last_alert_ts": 0
+  "cloud_started_v2": true,
+  "last_heartbeat_ts": 1788735207.217411,
+  "market": {
+    "liquidity": {
+      "alerted": false,
+      "last_alert_ts": 0
+    },
+    "price_ref": {
+      "msUSD": 0.5535933931926676,
+      "msY": 0.44828562865663363
+    },
+    "realized_bad_debt_usd": 0.0,
+    "utilization": {
+      "alerted": false,
+      "last_alert_ts": 0
+    }
   },
   "news_initialized": true,
   "news_seen": [
@@ -16,6 +28,13 @@
     "CBMiZ0FVX3lxTE5aMW9UdVptY3NqR3Y0aWxHcFdSSHNfaERFVWwzQ2oyVVBPSmp3RGFlbkFBMmhSZnROc195clBQX29yNU9yaGRQTzFlUjhVbUp1NGNvVkN6MTZKb0hXem5QVGNGWS0xeWc",
     "CBMiX0FVX3lxTFA1Yk85ams0VHNuSkY5V3pRYW5YUFZlVmpKNVRiMjlhZUZyNXFWZVNzV0hqVmJhWDdNT3BVUTVPdllKZ1FEbWxQS2JYcnQzV2xoMXZtM3JibzhqZzNaNzQ4"
   ],
+  "vault": {
+    "alerted": false,
+    "last_alert_ts": 0
+  },
+  "x_initialized": {
+    "Main_St_Finance": true
+  },
   "x_seen": {
     "Main_St_Finance": [
       "2064337216458158105",
@@ -45,8 +64,5 @@
       "2062930349085094144",
       "2062930353602347527"
     ]
-  },
-  "x_initialized": {
-    "Main_St_Finance": true
   }
 }
