@@ -1,7 +1,7 @@
 {
   "cloud_started": true,
   "cloud_started_v2": true,
-  "last_heartbeat_ts": 1792336637.8402362,
+  "last_heartbeat_ts": 1792434347.1989968,
   "market": {
     "liquidity": {
       "alerted": false,
@@ -9,7 +9,7 @@
     },
     "price_ref": {
       "msUSD": 0.9164775987090229,
-      "msY": 0.621074506261975
+      "msY": 0.5474469373941458
     },
     "realized_bad_debt_usd": 0.0,
     "utilization": {
